@@ -4,6 +4,8 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"github.com/rodrinoblega/microblogging/src/entities"
+	"sort"
+	"time"
 )
 
 type InMemoryTweetRepository struct {
@@ -20,6 +22,10 @@ func NewInMemoryTweetRepository() *InMemoryTweetRepository {
 func (r *InMemoryTweetRepository) Save(tweet *entities.Tweet) error {
 	if r.ShouldFail {
 		return errors.New("simulated error")
+	}
+
+	if tweet.CreatedAt.IsZero() {
+		tweet.CreatedAt = time.Now()
 	}
 
 	if _, exists := r.tweets[tweet.UserID]; !exists {
@@ -42,6 +48,10 @@ func (r *InMemoryTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID) ([]*enti
 			tweets = append(tweets, userTweets...)
 		}
 	}
+
+	sort.Slice(tweets, func(i, j int) bool {
+		return tweets[i].CreatedAt.After(tweets[j].CreatedAt)
+	})
 
 	return tweets, nil
 }

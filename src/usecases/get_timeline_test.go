@@ -21,19 +21,19 @@ func TestGetTimelineUseCase(t *testing.T) {
 		err := followRepository.Save(&entities.Follow{FollowerID: user1, FollowingID: user2})
 		assert.NoError(t, err)
 
-		tweet1 := &entities.Tweet{ID: uuid.New(), UserID: user2, Content: "This is a test tweet 1"}
+		tweet1 := &entities.Tweet{ID: uuid.New(), UserID: user2, Content: "Old tweet"}
 		err = tweetRepository.Save(tweet1)
 		assert.NoError(t, err)
 
-		tweet2 := &entities.Tweet{ID: uuid.New(), UserID: user2, Content: "This is a test tweet 2"}
+		tweet2 := &entities.Tweet{ID: uuid.New(), UserID: user2, Content: "New tweet"}
 		err = tweetRepository.Save(tweet2)
 		assert.NoError(t, err)
 
 		timelineUser1, err := timelineUseCase.Execute(user1)
 		assert.NoError(t, err)
 		assert.Len(t, timelineUser1, 2)
-		assert.Equal(t, "This is a test tweet 1", timelineUser1[0].Content)
-		assert.Equal(t, "This is a test tweet 2", timelineUser1[1].Content)
+		assert.Equal(t, "New tweet", timelineUser1[0].Content)
+		assert.Equal(t, "Old tweet", timelineUser1[1].Content)
 
 		timelineUser2, err := timelineUseCase.Execute(user2)
 		assert.NoError(t, err)
