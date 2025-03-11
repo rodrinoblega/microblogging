@@ -9,6 +9,7 @@ import (
 type FollowRepository interface {
 	Save(follow *entities.Follow) error
 	IsFollowing(followerID, followingID uuid.UUID) bool
+	GetFollowing(userID uuid.UUID) ([]uuid.UUID, error)
 }
 
 type FollowUserUseCase struct {

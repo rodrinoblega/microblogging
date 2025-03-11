@@ -28,6 +28,7 @@ func (r *InMemoryFollowRepository) Save(follow *entities.Follow) error {
 	}
 
 	r.follows[follow.FollowerID][follow.FollowingID] = true
+
 	return nil
 }
 
@@ -35,5 +36,17 @@ func (r *InMemoryFollowRepository) IsFollowing(followerID, followingID uuid.UUID
 	if followingMap, exists := r.follows[followerID]; exists {
 		return followingMap[followingID]
 	}
+
 	return false
+}
+
+func (r *InMemoryFollowRepository) GetFollowing(userID uuid.UUID) ([]uuid.UUID, error) {
+	var followingList []uuid.UUID
+	if followingMap, exists := r.follows[userID]; exists {
+		for followingID := range followingMap {
+			followingList = append(followingList, followingID)
+		}
+	}
+
+	return followingList, nil
 }
