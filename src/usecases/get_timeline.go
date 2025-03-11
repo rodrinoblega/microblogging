@@ -17,14 +17,14 @@ func NewGetTimelineUseCase(followRepository FollowRepository, tweetRepository Tw
 	}
 }
 
-func (gt *GetTimelineUseCase) Execute(userID uuid.UUID) ([]*entities.Tweet, error) {
+func (gt *GetTimelineUseCase) Execute(userID uuid.UUID, cursor *uuid.UUID, limit int) ([]*entities.Tweet, error) {
 	followingUsers, err := gt.followRepository.GetFollowing(userID)
 
 	if len(followingUsers) == 0 {
 		return []*entities.Tweet{}, nil
 	}
 
-	tweets, err := gt.tweetRepository.GetTweetsByUsers(followingUsers)
+	tweets, err := gt.tweetRepository.GetTweetsByUsers(followingUsers, cursor, limit)
 	if err != nil {
 		return nil, err
 	}

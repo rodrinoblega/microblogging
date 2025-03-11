@@ -37,7 +37,7 @@ func (r *InMemoryTweetRepository) Save(tweet *entities.Tweet) error {
 	return nil
 }
 
-func (r *InMemoryTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID) ([]*entities.Tweet, error) {
+func (r *InMemoryTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *uuid.UUID, limit int) ([]*entities.Tweet, error) {
 	if r.ShouldFail {
 		return nil, errors.New("simulated error")
 	}
@@ -52,6 +52,25 @@ func (r *InMemoryTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID) ([]*enti
 	sort.Slice(tweets, func(i, j int) bool {
 		return tweets[i].CreatedAt.After(tweets[j].CreatedAt)
 	})
+
+	if cursor != nil {
+		index := -1
+		for i, tweet := range tweets {
+			if tweet.ID == *cursor {
+				index = i + 1
+				break
+			}
+		}
+		if index == -1 || index >= len(tweets) {
+			return []*entities.Tweet{}, nil
+		}
+		tweets = tweets[index:]
+	}
+
+	// Aplicar limit
+	if len(tweets) > limit {
+		tweets = tweets[:limit]
+	}
 
 	return tweets, nil
 }

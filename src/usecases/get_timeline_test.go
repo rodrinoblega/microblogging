@@ -29,13 +29,13 @@ func TestGetTimelineUseCase(t *testing.T) {
 		err = tweetRepository.Save(tweet2)
 		assert.NoError(t, err)
 
-		timelineUser1, err := timelineUseCase.Execute(user1)
+		timelineUser1, err := timelineUseCase.Execute(user1, nil, 10)
 		assert.NoError(t, err)
 		assert.Len(t, timelineUser1, 2)
 		assert.Equal(t, "New tweet", timelineUser1[0].Content)
 		assert.Equal(t, "Old tweet", timelineUser1[1].Content)
 
-		timelineUser2, err := timelineUseCase.Execute(user2)
+		timelineUser2, err := timelineUseCase.Execute(user2, nil, 10)
 		assert.NoError(t, err)
 		assert.Len(t, timelineUser2, 0)
 	})
@@ -46,7 +46,7 @@ func TestGetTimelineUseCase(t *testing.T) {
 		err := followRepository.Save(&entities.Follow{FollowerID: user1, FollowingID: user2})
 		assert.NoError(t, err)
 
-		timelineUser1, err := timelineUseCase.Execute(user1)
+		timelineUser1, err := timelineUseCase.Execute(user1, nil, 10)
 
 		assert.Error(t, err)
 		assert.Nil(t, timelineUser1)

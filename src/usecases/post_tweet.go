@@ -8,7 +8,7 @@ import (
 
 type TweetRepository interface {
 	Save(tweet *entities.Tweet) error
-	GetTweetsByUsers(userIDs []uuid.UUID) ([]*entities.Tweet, error)
+	GetTweetsByUsers(userIDs []uuid.UUID, cursor *uuid.UUID, limit int) ([]*entities.Tweet, error)
 }
 
 type PostTweetUseCase struct {
