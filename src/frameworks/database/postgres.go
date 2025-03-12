@@ -26,7 +26,7 @@ func NewPostgres(env *config.Config) *gorm.DB {
 
 func postgresDB(env *config.Config) *gorm.DB {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=require",
 		env.PostgresHost,
 		env.PgUser,
 		env.PgPassword,
