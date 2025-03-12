@@ -13,11 +13,12 @@ type (
 	}
 
 	PgConfig struct {
-		PgUser       string
-		PgPassword   string
-		PgDatabase   string
-		PostgresPort string
-		PostgresHost string
+		PgUser          string
+		PgPassword      string
+		PgDatabase      string
+		PostgresPort    string
+		PostgresHost    string
+		PostgresSSLMode string
 	}
 )
 
@@ -42,11 +43,12 @@ func Load(env string) *Config {
 		Env:            env,
 		SentryEndpoint: viper.GetString("SENTRY_ENDPOINT"),
 		PgConfig: PgConfig{
-			PgUser:       viper.GetString("POSTGRES_USER"),
-			PgPassword:   viper.GetString("POSTGRES_PASSWORD"),
-			PgDatabase:   viper.GetString("POSTGRES_DB"),
-			PostgresPort: viper.GetString("POSTGRES_PORT"),
-			PostgresHost: viper.GetString("POSTGRES_HOST"),
+			PgUser:          viper.GetString("POSTGRES_USER"),
+			PgPassword:      viper.GetString("POSTGRES_PASSWORD"),
+			PgDatabase:      viper.GetString("POSTGRES_DB"),
+			PostgresPort:    viper.GetString("POSTGRES_PORT"),
+			PostgresHost:    viper.GetString("POSTGRES_HOST"),
+			PostgresSSLMode: viper.GetString("POSTGRES_SSL"),
 		},
 	}
 }

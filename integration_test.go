@@ -64,6 +64,20 @@ func TestIntegration(t *testing.T) {
 		assert.NotNil(t, tweets)
 	})
 
+	t.Run("create user", func(t *testing.T) {
+		requestBody, _ := json.Marshal(map[string]string{
+			"username": "rnoblega",
+		})
+
+		req, _ := http.NewRequest("POST", "/api/users", bytes.NewBuffer(requestBody))
+		req.Header.Set("Content-Type", "application/json")
+
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+
+		assert.Equal(t, http.StatusCreated, resp.Code)
+	})
+
 }
 
 func initialize() *gin.Engine {

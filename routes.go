@@ -15,5 +15,7 @@ func SetupRouter(dependencies *setup.AppDependencies) *gin.Engine {
 
 	api.GET("/timeline/:user_id", dependencies.TimelineController.GetTimeline)
 
+	api.POST("/users", dependencies.UserController.CreateUser)
+
 	return router
 }

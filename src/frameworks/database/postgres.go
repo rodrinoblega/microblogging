@@ -26,12 +26,13 @@ func NewPostgres(env *config.Config) *gorm.DB {
 
 func postgresDB(env *config.Config) *gorm.DB {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=require",
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		env.PostgresHost,
 		env.PgUser,
 		env.PgPassword,
 		env.PgDatabase,
 		env.PostgresPort,
+		env.PostgresSSLMode,
 	)
 	log.Printf("Trying to connect to database with: %s", dsn)
 
