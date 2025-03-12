@@ -2,15 +2,15 @@ package usecases
 
 import (
 	"github.com/google/uuid"
-	"github.com/rodrinoblega/microblogging/src/adapters"
+	"github.com/rodrinoblega/microblogging/src/adapters/repositories"
 	"github.com/rodrinoblega/microblogging/src/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestGetTimelineUseCase(t *testing.T) {
-	followRepository := adapters.NewInMemoryFollowRepository()
-	tweetRepository := adapters.NewInMemoryTweetRepository()
+	followRepository := repositories.NewInMemoryFollowRepository()
+	tweetRepository := repositories.NewInMemoryTweetRepository()
 	timelineUseCase := NewGetTimelineUseCase(followRepository, tweetRepository)
 
 	user1 := uuid.New()

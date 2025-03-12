@@ -1,0 +1,73 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: microblogging_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    networks:
+      - backend
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate
+    container_name: migration_runner
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "
+      until nc -z db 5432; do
+        echo 'Waiting for database...';
+        sleep 1;
+      done;
+      migrate -path /migrations -database postgres://postgres:example@db:5432/microblogging_db?sslmode=disable up;
+      "
+    volumes:
+      - ./migrations:/migrations
+    networks:
+      - backend
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: microblogging
+    depends_on:
+      - migrate
+      - redis
+    image: microblogging
+    networks:
+      - backend
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
+
+networks:
+  backend:

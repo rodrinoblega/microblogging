@@ -6,10 +6,10 @@ import (
 )
 
 type Tweet struct {
-	ID        uuid.UUID
-	UserID    uuid.UUID
-	Content   string
-	CreatedAt time.Time
+	ID        uuid.UUID `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	UserID    uuid.UUID `gorm:"type:uuid;not null"`
+	Content   string    `gorm:"type:text;not null"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
 }
 
 func NewTweet(userID uuid.UUID, content string) *Tweet {

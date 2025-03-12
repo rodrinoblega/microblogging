@@ -1,4 +1,4 @@
-package adapters
+package repositories
 
 import (
 	"errors"
@@ -67,7 +67,6 @@ func (r *InMemoryTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 		tweets = tweets[index:]
 	}
 
-	// Aplicar limit
 	if len(tweets) > limit {
 		tweets = tweets[:limit]
 	}

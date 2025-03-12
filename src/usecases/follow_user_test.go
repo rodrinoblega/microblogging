@@ -2,14 +2,14 @@ package usecases
 
 import (
 	"github.com/google/uuid"
-	"github.com/rodrinoblega/microblogging/src/adapters"
+	"github.com/rodrinoblega/microblogging/src/adapters/repositories"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func TestFollowUserUseCase(t *testing.T) {
-	followRepository := adapters.NewInMemoryFollowRepository()
+	followRepository := repositories.NewInMemoryFollowRepository()
 	followUserUseCase := NewFollowUserUseCase(followRepository)
 
 	user1 := uuid.New()

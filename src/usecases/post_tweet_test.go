@@ -1,8 +1,9 @@
 package usecases
 
 import (
+	"fmt"
 	"github.com/google/uuid"
-	"github.com/rodrinoblega/microblogging/src/adapters"
+	"github.com/rodrinoblega/microblogging/src/adapters/repositories"
 	"github.com/rodrinoblega/microblogging/src/entities"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestPostTweetUseCase(t *testing.T) {
-	tweetRepository := adapters.NewInMemoryTweetRepository()
+	tweetRepository := repositories.NewInMemoryTweetRepository()
 	postTweetUseCase := NewPostTweetUseCase(tweetRepository)
 
 	userID := uuid.New()
@@ -95,5 +96,13 @@ func TestPostTweetUseCase(t *testing.T) {
 		assert.Error(t, err)
 		assert.Nil(t, tweet)
 		assert.EqualError(t, err, "simulated error")
+	})
+
+	t.Run("", func(t *testing.T) {
+		var maptest map[string]string
+
+		if _, exists := maptest["asd"]; exists {
+			fmt.Println(maptest["asd"])
+		}
 	})
 }

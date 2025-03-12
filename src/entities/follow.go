@@ -1,8 +1,12 @@
 package entities
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"time"
+)
 
 type Follow struct {
-	FollowerID  uuid.UUID `json:"follower_id"`
-	FollowingID uuid.UUID `json:"following_id"`
+	FollowerID  uuid.UUID `gorm:"type:uuid;primaryKey"`
+	FollowingID uuid.UUID `gorm:"type:uuid;primaryKey"`
+	CreatedAt   time.Time `gorm:"autoCreateTime"`
 }
