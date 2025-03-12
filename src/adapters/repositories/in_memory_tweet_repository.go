@@ -42,34 +42,48 @@ func (r *InMemoryTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 		return nil, errors.New("simulated error")
 	}
 
-	var tweets []*entities.Tweet
-	for _, userID := range userIDs {
-		if userTweets, exists := r.tweets[userID]; exists {
-			tweets = append(tweets, userTweets...)
-		}
+	tweets := r.collectTweets(userIDs)
+	r.sortTweetsByDateDesc(tweets)
+
+	if cursor != nil {
+		tweets = r.applyCursor(tweets, *cursor)
 	}
 
+	return r.applyLimit(tweets, limit), nil
+}
+
+func (r *InMemoryTweetRepository) collectTweets(userIDs []uuid.UUID) []*entities.Tweet {
+	var tweets []*entities.Tweet
+	for _, userID := range userIDs {
+		tweets = append(tweets, r.tweets[userID]...)
+	}
+
+	return tweets
+}
+
+func (r *InMemoryTweetRepository) sortTweetsByDateDesc(tweets []*entities.Tweet) {
 	sort.Slice(tweets, func(i, j int) bool {
 		return tweets[i].CreatedAt.After(tweets[j].CreatedAt)
 	})
+}
 
-	if cursor != nil {
-		index := -1
-		for i, tweet := range tweets {
-			if tweet.ID == *cursor {
-				index = i + 1
-				break
+func (r *InMemoryTweetRepository) applyCursor(tweets []*entities.Tweet, cursor uuid.UUID) []*entities.Tweet {
+	for i, tweet := range tweets {
+		if tweet.ID == cursor {
+			if i+1 < len(tweets) {
+				return tweets[i+1:]
 			}
+			return []*entities.Tweet{}
 		}
-		if index == -1 || index >= len(tweets) {
-			return []*entities.Tweet{}, nil
-		}
-		tweets = tweets[index:]
 	}
 
+	return []*entities.Tweet{}
+}
+
+func (r *InMemoryTweetRepository) applyLimit(tweets []*entities.Tweet, limit int) []*entities.Tweet {
 	if len(tweets) > limit {
-		tweets = tweets[:limit]
+		return tweets[:limit]
 	}
 
-	return tweets, nil
+	return tweets
 }

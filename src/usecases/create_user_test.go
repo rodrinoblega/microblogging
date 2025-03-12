@@ -27,4 +27,14 @@ func TestCreateUserUseCase(t *testing.T) {
 		assert.Nil(t, user)
 		assert.EqualError(t, err, "username must not be empty")
 	})
+
+	t.Run("should return error if creating user fails", func(t *testing.T) {
+		userRepository.ShouldFail = true
+
+		tweet, err := createUserUseCase.Execute("hello")
+
+		assert.Error(t, err)
+		assert.Nil(t, tweet)
+		assert.EqualError(t, err, "simulated error")
+	})
 }

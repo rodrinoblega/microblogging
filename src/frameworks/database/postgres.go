@@ -38,8 +38,7 @@ func postgresDB(env *config.Config) *gorm.DB {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Printf("Failed to connect to PostgreSQL database: %v", err)
-		panic(err)
+		log.Fatalf("Failed to connect to PostgreSQL database: %v", err)
 	}
 
 	return db

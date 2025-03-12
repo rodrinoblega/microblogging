@@ -61,8 +61,15 @@ func TestPostTweetUseCase(t *testing.T) {
 			assert.NoError(t, err)
 		}
 
+		notValidCursor := uuid.New()
+
+		// Not valid cursor
+		result, err := tweetRepository.GetTweetsByUsers([]uuid.UUID{user1}, &notValidCursor, 1)
+		assert.NoError(t, err)
+		assert.Len(t, result, 0)
+
 		// Tweets of user 1 and limit 1
-		result, err := tweetRepository.GetTweetsByUsers([]uuid.UUID{user1}, nil, 1)
+		result, err = tweetRepository.GetTweetsByUsers([]uuid.UUID{user1}, nil, 1)
 		assert.NoError(t, err)
 		assert.Len(t, result, 1)
 		assert.Equal(t, "Tweet 2", result[0].Content)

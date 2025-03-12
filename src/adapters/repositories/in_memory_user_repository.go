@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"github.com/rodrinoblega/microblogging/src/entities"
-	"time"
 )
 
 type InMemoryUserRepository struct {
@@ -21,10 +20,6 @@ func NewInMemoryUserRepository() *InMemoryUserRepository {
 func (r *InMemoryUserRepository) Save(user *entities.User) error {
 	if r.ShouldFail {
 		return errors.New("simulated error")
-	}
-
-	if user.CreatedAt.IsZero() {
-		user.CreatedAt = time.Now()
 	}
 
 	if _, exists := r.users[user.ID]; !exists {

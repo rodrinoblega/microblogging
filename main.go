@@ -1,7 +1,7 @@
 package main
 
 import (
-	config2 "github.com/rodrinoblega/microblogging/config"
+	"github.com/rodrinoblega/microblogging/config"
 	"github.com/rodrinoblega/microblogging/setup"
 	"log"
 	"os"
@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	envConf := config2.Load(os.Getenv("ENV"))
+	envConf := config.Load(os.Getenv("ENV"))
 
 	var appDependencies *setup.AppDependencies
 	appDependencies = setup.InitializeDependencies(envConf)

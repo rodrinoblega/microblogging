@@ -1,18 +1,21 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rodrinoblega/microblogging/src/usecases"
+	"github.com/rodrinoblega/microblogging/src/entities"
 	"net/http"
 )
 
-type TweetController struct {
-	postTweetUseCase *usecases.PostTweetUseCase
+type PostTweetUseCaseInterface interface {
+	Execute(userID uuid.UUID, content string) (*entities.Tweet, error)
 }
 
-func NewTweetController(postTweetUseCase *usecases.PostTweetUseCase) *TweetController {
+type TweetController struct {
+	postTweetUseCase PostTweetUseCaseInterface
+}
+
+func NewTweetController(postTweetUseCase PostTweetUseCaseInterface) *TweetController {
 	return &TweetController{postTweetUseCase: postTweetUseCase}
 }
 
@@ -39,5 +42,5 @@ func (tc *TweetController) PostTweet(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Tweet created successfully. ID %v", tweet.ID)})
+	c.JSON(http.StatusCreated, tweet)
 }

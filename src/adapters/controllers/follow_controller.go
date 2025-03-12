@@ -3,15 +3,18 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rodrinoblega/microblogging/src/usecases"
 	"net/http"
 )
 
-type FollowController struct {
-	followUserUseCase *usecases.FollowUserUseCase
+type FollowUserUseCaseInterface interface {
+	Execute(followerID, followingID uuid.UUID) error
 }
 
-func NewFollowController(followUserUseCase *usecases.FollowUserUseCase) *FollowController {
+type FollowController struct {
+	followUserUseCase FollowUserUseCaseInterface
+}
+
+func NewFollowController(followUserUseCase FollowUserUseCaseInterface) *FollowController {
 	return &FollowController{followUserUseCase: followUserUseCase}
 }
 

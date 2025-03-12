@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/rodrinoblega/microblogging/setup"
+	"github.com/rodrinoblega/microblogging/src/entities"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -16,6 +17,7 @@ func TestIntegration(t *testing.T) {
 	router := initialize()
 
 	userID := uuid.New()
+	var tweet *entities.Tweet
 
 	t.Run("post tweet", func(t *testing.T) {
 		requestBody, _ := json.Marshal(map[string]string{
@@ -28,6 +30,8 @@ func TestIntegration(t *testing.T) {
 
 		resp := httptest.NewRecorder()
 		router.ServeHTTP(resp, req)
+
+		json.Unmarshal(resp.Body.Bytes(), &tweet)
 
 		assert.Equal(t, http.StatusCreated, resp.Code)
 	})
@@ -52,6 +56,20 @@ func TestIntegration(t *testing.T) {
 
 	t.Run("get timeline", func(t *testing.T) {
 		req, _ := http.NewRequest("GET", "/api/timeline/"+userID.String()+"?limit=10", nil)
+
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+
+		assert.Equal(t, http.StatusOK, resp.Code)
+
+		var tweets []map[string]interface{}
+		json.Unmarshal(resp.Body.Bytes(), &tweets)
+
+		assert.NotNil(t, tweets)
+	})
+
+	t.Run("get timeline with cursor", func(t *testing.T) {
+		req, _ := http.NewRequest("GET", "/api/timeline/"+userID.String()+"?limit=10&cursor="+tweet.ID.String(), nil)
 
 		resp := httptest.NewRecorder()
 		router.ServeHTTP(resp, req)

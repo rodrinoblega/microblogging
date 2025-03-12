@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rodrinoblega/microblogging/src/usecases"
+	"github.com/rodrinoblega/microblogging/src/entities"
 	"net/http"
 )
 
-type TimelineController struct {
-	getTimelineUseCase *usecases.GetTimelineUseCase
+type GetTimeLineUseCaseInterface interface {
+	Execute(userID uuid.UUID, cursor *uuid.UUID, limit int) ([]*entities.Tweet, error)
 }
 
-func NewTimelineController(getTimelineUseCase *usecases.GetTimelineUseCase) *TimelineController {
+type TimelineController struct {
+	getTimelineUseCase GetTimeLineUseCaseInterface
+}
+
+func NewTimelineController(getTimelineUseCase GetTimeLineUseCaseInterface) *TimelineController {
 	return &TimelineController{getTimelineUseCase: getTimelineUseCase}
 }
 

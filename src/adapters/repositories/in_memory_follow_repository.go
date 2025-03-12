@@ -4,12 +4,10 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"github.com/rodrinoblega/microblogging/src/entities"
-	"sync"
 )
 
 type InMemoryFollowRepository struct {
 	follows map[uuid.UUID]map[uuid.UUID]bool
-	mu      sync.RWMutex
 }
 
 func NewInMemoryFollowRepository() *InMemoryFollowRepository {

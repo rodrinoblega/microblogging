@@ -3,15 +3,19 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/rodrinoblega/microblogging/src/usecases"
+	"github.com/rodrinoblega/microblogging/src/entities"
 	"net/http"
 )
 
-type UserController struct {
-	createUserUseCase *usecases.CreateUserUseCase
+type CreateUserUseCaseInterface interface {
+	Execute(username string) (*entities.User, error)
 }
 
-func NewUserController(createUserUseCase *usecases.CreateUserUseCase) *UserController {
+type UserController struct {
+	createUserUseCase CreateUserUseCaseInterface
+}
+
+func NewUserController(createUserUseCase CreateUserUseCaseInterface) *UserController {
 	return &UserController{createUserUseCase: createUserUseCase}
 }
 
