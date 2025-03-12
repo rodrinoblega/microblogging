@@ -2,6 +2,7 @@ package database
 
 import (
 	"github.com/go-redis/redis/v8"
+	"github.com/rodrinoblega/microblogging/config"
 	"log"
 	"sync"
 )
@@ -11,9 +12,9 @@ var (
 	instanceRedis *redis.Client
 )
 
-func NewRedis() *redis.Client {
+func NewRedis(env *config.Config) *redis.Client {
 	onceRedis.Do(func() {
-		instanceRedis = redisDB()
+		instanceRedis = redisDB(env)
 	})
 
 	log.Printf("Successfully connected to Redis database")
@@ -21,9 +22,9 @@ func NewRedis() *redis.Client {
 	return instanceRedis
 }
 
-func redisDB() *redis.Client {
+func redisDB(env *config.Config) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis:6379",
+		Addr:     env.SentryEndpoint,
 		Password: "",
 		DB:       0,
 	})

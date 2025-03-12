@@ -7,7 +7,8 @@ import (
 
 type (
 	Config struct {
-		Env string
+		Env            string
+		SentryEndpoint string
 		PgConfig
 	}
 
@@ -38,7 +39,8 @@ func Load(env string) *Config {
 	}
 
 	return &Config{
-		Env: env,
+		Env:            env,
+		SentryEndpoint: viper.GetString("SENTRY_ENDPOINT"),
 		PgConfig: PgConfig{
 			PgUser:       viper.GetString("POSTGRES_USER"),
 			PgPassword:   viper.GetString("POSTGRES_PASSWORD"),

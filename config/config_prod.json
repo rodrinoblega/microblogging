@@ -1,0 +1,9 @@
+{
+  "POSTGRES_USER": "postgres",
+  "POSTGRES_PASSWORD": "uala2025",
+  "POSTGRES_DB": "microblogging_db",
+  "POSTGRES_PORT": "5432",
+  "POSTGRES_HOST": "microblogging-database.cr444aiey5ro.us-east-1.rds.amazonaws.com",
+  "SENTRY_ENDPOINT": "microblogging-cache-nvgnk1.serverless.use1.cache.amazonaws.com:6379"
+
+}

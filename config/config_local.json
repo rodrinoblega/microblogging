@@ -3,5 +3,6 @@
   "POSTGRES_PASSWORD": "example",
   "POSTGRES_DB": "microblogging_db",
   "POSTGRES_PORT": "5432",
-  "POSTGRES_HOST": "db"
+  "POSTGRES_HOST": "db",
+  "SENTRY_ENDPOINT": "redis:6379"
 }

@@ -16,7 +16,7 @@ type AppDependencies struct {
 
 func InitializeLocalDependencies(envConf *config.Config) *AppDependencies {
 	db := database.NewPostgres(envConf)
-	redis := database.NewRedis()
+	redis := database.NewRedis(envConf)
 
 	tweetRepository := repositories.NewPostgresTweetRepository(db, redis)
 	followRepository := repositories.NewPostgresFollowRepository(db)
