@@ -39,6 +39,8 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 		} else {
 			log.Printf("error unmarshalling cache db %v", err)
 		}
+	} else {
+		log.Printf("error getting cache data %v", err)
 	}
 
 	query := r.db.Where("user_id IN ?", userIDs)
