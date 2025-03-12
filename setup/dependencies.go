@@ -14,7 +14,7 @@ type AppDependencies struct {
 	TimelineController *controllers.TimelineController
 }
 
-func InitializeLocalDependencies(envConf *config.Config) *AppDependencies {
+func InitializeDependencies(envConf *config.Config) *AppDependencies {
 	db := database.NewPostgres(envConf)
 	redis := database.NewRedis(envConf)
 
