@@ -2,6 +2,7 @@ package database
 
 import (
 	"github.com/go-redis/redis/v8"
+	"log"
 	"sync"
 )
 
@@ -14,6 +15,8 @@ func NewRedis() *redis.Client {
 	onceRedis.Do(func() {
 		instanceRedis = redisDB()
 	})
+
+	log.Printf("Successfully connected to Redis database")
 
 	return instanceRedis
 }

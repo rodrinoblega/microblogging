@@ -5,6 +5,7 @@ import (
 	"github.com/rodrinoblega/microblogging/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 	"sync"
 )
 
@@ -17,6 +18,8 @@ func NewPostgres(env *config.Config) *gorm.DB {
 	once.Do(func() {
 		instancePostgres = postgresDB(env)
 	})
+
+	log.Printf("Successfully connected to PostgreSQL database")
 
 	return instancePostgres
 }
@@ -32,8 +35,8 @@ func postgresDB(env *config.Config) *gorm.DB {
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	fmt.Println("Antes")
 	if err != nil {
+		log.Printf("Failed to connect to PostgreSQL database: %v", err)
 		panic(err)
 	}
 

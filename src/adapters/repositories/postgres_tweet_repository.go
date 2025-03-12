@@ -3,11 +3,11 @@ package repositories
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"github.com/rodrinoblega/microblogging/src/entities"
 	"gorm.io/gorm"
+	"log"
 	"strconv"
 	"time"
 )
@@ -34,7 +34,7 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 	cachedTweets, err := r.cache.Get(ctx, cacheKey).Result()
 	if err == nil {
 		if err = json.Unmarshal([]byte(cachedTweets), &tweets); err == nil {
-			fmt.Println("tweets obtained from cache")
+			log.Printf("Retrieving tweets from cache")
 			return tweets, nil
 		}
 	}
@@ -49,6 +49,7 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 		query = query.Where("created_at < ?", cursorTweet.CreatedAt)
 	}
 
+	log.Printf("Retrieving tweets from database")
 	err = query.Order("created_at desc").Limit(limit).Find(&tweets).Error
 	if err != nil {
 		return nil, err
@@ -56,10 +57,10 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 
 	serializedTweets, err := json.Marshal(tweets)
 	if err == nil {
+		log.Printf("Catching database result")
 		r.cache.Set(ctx, cacheKey, serializedTweets, time.Hour).Err()
 	}
 
-	fmt.Println("tweets obtained from bd")
 	return tweets, nil
 }
 
