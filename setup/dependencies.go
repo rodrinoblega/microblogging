@@ -35,3 +35,22 @@ func InitializeLocalDependencies(envConf *config.Config) *AppDependencies {
 		TimelineController: timelineController,
 	}
 }
+
+func InitializeTestDependencies() *AppDependencies {
+	tweetRepo := repositories.NewInMemoryTweetRepository()
+	followRepo := repositories.NewInMemoryFollowRepository()
+
+	postTweetUseCase := usecases.NewPostTweetUseCase(tweetRepo)
+	followUserUseCase := usecases.NewFollowUserUseCase(followRepo)
+	getTimelineUseCase := usecases.NewGetTimelineUseCase(followRepo, tweetRepo)
+
+	tweetController := controllers.NewTweetController(postTweetUseCase)
+	followController := controllers.NewFollowController(followUserUseCase)
+	getTimelineController := controllers.NewTimelineController(getTimelineUseCase)
+
+	return &AppDependencies{
+		FollowController:   followController,
+		TweetController:    tweetController,
+		TimelineController: getTimelineController,
+	}
+}

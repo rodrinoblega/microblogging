@@ -6,9 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/rodrinoblega/microblogging/setup"
-	"github.com/rodrinoblega/microblogging/src/adapters/controllers"
-	"github.com/rodrinoblega/microblogging/src/adapters/repositories"
-	"github.com/rodrinoblega/microblogging/src/usecases"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -16,7 +13,7 @@ import (
 )
 
 func TestIntegration(t *testing.T) {
-	router := inititialize()
+	router := initialize()
 
 	userID := uuid.New()
 
@@ -69,25 +66,10 @@ func TestIntegration(t *testing.T) {
 
 }
 
-func inititialize() *gin.Engine {
+func initialize() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 
-	tweetRepo := repositories.NewInMemoryTweetRepository()
-	followRepo := repositories.NewInMemoryFollowRepository()
-
-	postTweetUseCase := usecases.NewPostTweetUseCase(tweetRepo)
-	followUserUseCase := usecases.NewFollowUserUseCase(followRepo)
-	getTimelineUseCase := usecases.NewGetTimelineUseCase(followRepo, tweetRepo)
-
-	tweetController := controllers.NewTweetController(postTweetUseCase)
-	followController := controllers.NewFollowController(followUserUseCase)
-	getTimelineController := controllers.NewTimelineController(getTimelineUseCase)
-
-	appDependencies := &setup.AppDependencies{
-		FollowController:   followController,
-		TweetController:    tweetController,
-		TimelineController: getTimelineController,
-	}
+	appDependencies := setup.InitializeTestDependencies()
 
 	router := SetupRouter(appDependencies)
 
