@@ -36,6 +36,8 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 		if err = json.Unmarshal([]byte(cachedTweets), &tweets); err == nil {
 			log.Printf("Retrieving tweets from cache")
 			return tweets, nil
+		} else {
+			log.Printf("error unmarshalling cache db %v", err)
 		}
 	}
 
