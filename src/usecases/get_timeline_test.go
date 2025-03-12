@@ -43,7 +43,7 @@ func TestGetTimelineUseCase(t *testing.T) {
 	t.Run("should return error on gettimeline", func(t *testing.T) {
 		tweetRepository.ShouldFail = true
 
-		err := followRepository.Save(&entities.Follow{FollowerID: user1, FollowingID: user2})
+		err := followRepository.Save(&entities.Follow{FollowerID: user2, FollowingID: user1})
 		assert.NoError(t, err)
 
 		timelineUser1, err := timelineUseCase.Execute(user1, nil, 10)

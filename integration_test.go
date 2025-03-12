@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/rodrinoblega/microblogging/setup"
 	"github.com/rodrinoblega/microblogging/src/adapters/controllers"
 	"github.com/rodrinoblega/microblogging/src/adapters/repositories"
 	"github.com/rodrinoblega/microblogging/src/usecases"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestIntegration(t *testing.T) {
-	router := setup()
+	router := inititialize()
 
 	userID := uuid.New()
 
@@ -68,7 +69,7 @@ func TestIntegration(t *testing.T) {
 
 }
 
-func setup() *gin.Engine {
+func inititialize() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 
 	tweetRepo := repositories.NewInMemoryTweetRepository()
@@ -82,7 +83,13 @@ func setup() *gin.Engine {
 	followController := controllers.NewFollowController(followUserUseCase)
 	getTimelineController := controllers.NewTimelineController(getTimelineUseCase)
 
-	router := SetupRouter(followController, tweetController, getTimelineController)
+	appDependencies := &setup.AppDependencies{
+		FollowController:   followController,
+		TweetController:    tweetController,
+		TimelineController: getTimelineController,
+	}
+
+	router := SetupRouter(appDependencies)
 
 	return router
 }
