@@ -167,13 +167,13 @@ These commands will generate a coverage report highlighting a high percentage of
 ## External Libraries Used
 
 External libraries:
-Testify: Used for writing tests, providing assertions and test suite functionality.
-UUID: Ensures unique identifiers for entities.
-Gin: A high-performance HTTP web framework that simplifies request handling and routing.
-Viper: Manages application configuration, supporting environment variables.
-GORM: An ORM for Go that simplifies database interactions.
-Postgres Driver: Enables GORM to interact with PostgreSQL.
-Redis: Client to connect to Redis.
+- Testify: Used for writing tests, providing assertions and test suite functionality.
+- UUID: Ensures unique identifiers for entities.
+- Gin: A high-performance HTTP web framework that simplifies request handling and routing.
+- Viper: Manages application configuration, supporting environment variables.
+- GORM: An ORM for Go that simplifies database interactions.
+- Postgres Driver: Enables GORM to interact with PostgreSQL.
+- Redis: Client to connect to Redis.
 
 ## Questions
 
