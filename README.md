@@ -1,4 +1,4 @@
-# Microbligging - UALA
+# Microblogging - UALA
 
 ![technology Golang](https://img.shields.io/badge/technology-Golang-blue.svg)
 
