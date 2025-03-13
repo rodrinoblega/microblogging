@@ -10,7 +10,7 @@ Features
 - Post Tweets: Users can create short tweets posts.
 - Follow People: Users can follow other users.
 - Feed Display: A chronological feed displaying posts from all users they follow.
-- User Creation: User creation with an username.
+- User Creation: User creation with username.
 
 
 ## Project Structure - Clean Architecture
@@ -27,17 +27,13 @@ The architecture consists of four main layers:
 
 ### Project Structure - Diagram
 
-![](static/Microblogging_Diagram.jpg)
+![](static/Microblogging_diagram.jpg)
 
-## How to run the application
+## Architecture
 
-### Prerequisites
+### Local
 
-Ensure you have the following installed before running the application:
-- Go (version 1.23 or later)
-- A terminal with access to run CLI commands
-- Git (for cloning the repository)
-- Docker (if running with a container)
+![](static/Local_Arch.jpg)
 
 This project uses Docker Compose to manage the necessary services (PostgreSQL, Redis, migrations, and the application). To run the project locally, follow the steps below.
 
@@ -47,17 +43,66 @@ You can run the app locally with Docker executing.
 
 This command will:
 - Start a PostgreSQL locally in the port 5432.
-- Start a Redis Cache locally in the port 
+- Start a Redis Cache locally in the port
 - Make all the migration process using the files in /migrations.
 - Start the Microblogging application locally.
 
+### Prod
 
-In your code, by providing a cursor (which is the ID of the tweet from which you want to start pagination), the query filters tweets created before the creation date of the tweet corresponding to the cursor. This allows efficient retrieval of tweets preceding the cursor, ordered in descending order by creation date, and limited to the number specified by the limit.
+![](static/Local_Arch.jpg)
 
+The system is designed to scale efficiently and handle a high number of users while ensuring optimal read performance.
+The API Gateway manages incoming requests, routing them to the application. A Load Balancer distributes traffic across multiple EC2 instances, which are part of an Auto Scaling Group to dynamically adjust capacity based on demand.
+To optimize read performance, the application uses Redis as a caching layer, reducing direct database queries. The RDS handles persistent data storage and supports read replicas to distribute the read load. Additionally, X-Ray and CloudWatch are integrated for monitoring and tracing requests.
+To prevent excessive database load when retrieving tweets, the application implements pagination, ensuring efficient data retrieval without overwhelming the system.
 
+Why Each Component Was Chosen
+- API Gateway: Centralized request management, authentication, and throttling.
+- Load Balancer: Distributes traffic evenly across multiple instances, improving reliability.
+- EC2 Auto Scaling Group: Ensures the system can scale up or down based on traffic.
+- Redis: Reduces database load by caching frequent queries, improving read performance.
+- RDS with Read Replicas: Enables horizontal scaling for read-heavy workloads.
+- X-Ray & CloudWatch: Provides visibility into system performance and request tracing.
 
-Además de las optimizaciones actuales, es recomendable incluir en la documentación del proyecto posibles mejoras futuras, como:
+Amazon RDS was chosen to host PostgreSQL because it simplifies database management while ensuring scalability, security, and high availability.
+- Scalability: It allows read replicas, helping to handle many users efficiently.
+- Fast Searches: Supports indexing which speeds up searches.
+- Data Integrity: Ensures consistency and prevents data corruption.
+- Flexibility: Supports structured (SQL) and semi-structured (JSON) data.
 
-Particionamiento de Tablas: Dividir tablas grandes en particiones más pequeñas para mejorar el rendimiento de las consultas.
+## Testing strategy
 
-Índices Adicionales: Crear índices en columnas que se utilizan frecuentemente en filtros y órdenes para acelerar las consultas.
+The project follows Clean Architecture principles and aims for high test coverage. The development process was guided by Test-Driven Development (TDD) to ensure reliability and maintainability.
+
+- 100% coverage in core business layers (Use Cases & Entities) to guarantee that all business logic is fully tested.
+- Unit tests to validate business rules independently.
+- Integration tests to verify interactions between components.
+- Mocks and in-memory databases to simulate dependencies efficiently.
+
+```
+go test ./... -coverpkg=./... -coverprofile=coverage.out
+```
+
+```
+go tool cover -html=coverage.out
+```
+
+These commands will generate a coverage report highlighting a high percentage of their lines covered by tests.
+
+![](static/Code_Coverage.jpg)
+
+## External Libraries Used
+
+External libraries:
+Testify: Used for writing tests, providing assertions and test suite functionality.
+UUID: Ensures unique identifiers for entities.
+Gin: A high-performance HTTP web framework that simplifies request handling and routing.
+Viper: Manages application configuration, supporting environment variables.
+GORM: An ORM for Go that simplifies database interactions.
+Postgres Driver: Enables GORM to interact with PostgreSQL.
+Redis: Client to connect to Redis.
+
+## Questions
+
+* [rnoblega@gmail.com](rnoblega@gmail.com)
+
