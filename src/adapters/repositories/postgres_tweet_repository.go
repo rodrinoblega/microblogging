@@ -27,10 +27,10 @@ func (r *PostgresTweetRepository) Save(tweet *entities.Tweet) error {
 }
 
 func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *uuid.UUID, limit int) ([]*entities.Tweet, error) {
-	ctx := context.Background()
+	/*ctx := context.Background()
 	cacheKey := generateCacheKey(userIDs, cursor, limit)
 
-	/*if tweets, err := r.getTweetsFromCache(ctx, cacheKey); err == nil {
+	if tweets, err := r.getTweetsFromCache(ctx, cacheKey); err == nil {
 		log.Println("Tweets retrieved from cache")
 		return tweets, nil
 	} else {
@@ -42,9 +42,9 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 		return nil, err
 	}
 
-	if err = r.storeTweetsInCache(ctx, cacheKey, tweets); err != nil {
+	/*if err = r.storeTweetsInCache(ctx, cacheKey, tweets); err != nil {
 		log.Printf("Error storing in cache: %v", err)
-	}
+	}*/
 
 	return tweets, nil
 }
