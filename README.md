@@ -3,7 +3,7 @@
 ![technology Golang](https://img.shields.io/badge/technology-Golang-blue.svg)
 
 
-Microblogging platform that try to simulate the behaviour of Twitter.
+A microblogging platform that tries to simulate Twitter's behavior.
 
 Features
 - Post Tweets: Users can create short tweets posts.
@@ -36,24 +36,24 @@ The architecture consists of four main layers:
 
 This project uses Docker Compose to manage the necessary services (PostgreSQL, Redis, migrations, and the application). To run the project locally, follow the steps below.
 
-You can run the app locally with Docker executing.
+You can run the app locally using Docker by executing the following command:
 
 ```docker compose up --build ```
 
 This command will:
-- Start a PostgreSQL locally in the port 5432.
-- Start a Redis Cache locally in the port
+- Start a local PostgreSQL instance on port 5432.
+- Start a local Redis cache instance on its default port.
 - Make all the migration process using the files in /migrations.
 - Start the Microblogging application locally.
 
 ### Prod
 
-![](static/Local_Arch.jpg)
+![](static/Prod_Arch.jpg)
 
 The system is designed to scale efficiently and handle a high number of users while ensuring optimal read performance.
 The API Gateway manages incoming requests, routing them to the application. A Load Balancer distributes traffic across multiple EC2 instances, which are part of an Auto Scaling Group to dynamically adjust capacity based on demand.
 To optimize read performance, the application uses Redis as a caching layer, reducing direct database queries. The RDS handles persistent data storage and supports read replicas to distribute the read load. Additionally, X-Ray and CloudWatch are integrated for monitoring and tracing requests.
-To prevent excessive database load when retrieving tweets, the application implements pagination, ensuring efficient data retrieval without overwhelming the system.
+To prevent excessive database load when retrieving tweets, the application implements pagination, ensuring efficient data retrieval and preventing system overload.
 
 Why Each Component Was Chosen
 - API Gateway: Centralized request management, authentication, and throttling.
@@ -63,9 +63,9 @@ Why Each Component Was Chosen
 - RDS with Read Replicas: Enables horizontal scaling for read-heavy workloads.
 - X-Ray & CloudWatch: Provides visibility into system performance and request tracing.
 
-Amazon RDS was chosen to host PostgreSQL because it simplifies database management while ensuring scalability, security, and high availability.
+Amazon RDS was chosen as the PostgreSQL host because it simplifies database management while ensuring scalability, security, and high availability.
 - Scalability: It allows read replicas, helping to handle many users efficiently.
-- Fast Searches: Supports indexing which speeds up searches.
+- Fast Queries: Supports indexing, which significantly improves search performance.
 - Data Integrity: Ensures consistency and prevents data corruption.
 - Flexibility: Supports structured (SQL) and semi-structured (JSON) data.
 
@@ -135,7 +135,7 @@ The timeline should display tweets from mperez, lrodriguez, and cmartinez, sorte
 ![](static/TimelineNoCursor.jpg)
 
 
-The timeline should display tweets from mperez, lrodriguez, and cmartinez, sorted from newest to oldest without a cursor at the fifth tweet and a limit of 3:
+The timeline should display tweets from mperez, lrodriguez, and cmartinez, sorted from newest to oldest, starting from the fifth tweet and with a limit of 3.:
 
 - "First tweet of cmartinez"
 - "First tweet of lrodriguez"
