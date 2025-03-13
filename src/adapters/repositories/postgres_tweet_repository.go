@@ -30,12 +30,12 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 	ctx := context.Background()
 	cacheKey := generateCacheKey(userIDs, cursor, limit)
 
-	if tweets, err := r.getTweetsFromCache(ctx, cacheKey); err == nil {
+	/*if tweets, err := r.getTweetsFromCache(ctx, cacheKey); err == nil {
 		log.Println("Tweets retrieved from cache")
 		return tweets, nil
 	} else {
 		log.Printf("Error retrieving data from cache: %v", err)
-	}
+	}*/
 
 	tweets, err := r.getTweetsFromDB(userIDs, cursor, limit)
 	if err != nil {
@@ -111,7 +111,7 @@ func generateCacheKey(userIDs []uuid.UUID, cursor *uuid.UUID, limit int) string 
 		keyBuilder.WriteString(cursor.String())
 		keyBuilder.WriteString(":")
 	}
-	
+
 	keyBuilder.WriteString(strconv.Itoa(limit))
 
 	return keyBuilder.String()
