@@ -1,7 +1,6 @@
 package database
 
 import (
-	"context"
 	"github.com/go-redis/redis/v8"
 	"github.com/rodrinoblega/microblogging/config"
 	"log"
@@ -24,7 +23,7 @@ func NewRedis(env *config.Config) *redis.Client {
 }
 
 func redisDB(env *config.Config) *redis.Client {
-	ctx := context.Background()
+	//ctx := context.Background()
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     env.SentryEndpoint,
@@ -32,11 +31,11 @@ func redisDB(env *config.Config) *redis.Client {
 		DB:       0,
 	})
 
-	pong, err := rdb.Ping(ctx).Result()
+	/*pong, _ := rdb.Ping(ctx).Result()
 	if err != nil {
 		log.Fatalf("Could not connect to Redis: %v", err)
 	}
-	log.Printf("Connected to Redis: %s", pong)
+	log.Printf("Connected to Redis: %s", pong)*/
 
 	return rdb
 }
