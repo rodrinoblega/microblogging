@@ -3,7 +3,6 @@
 ![technology Golang](https://img.shields.io/badge/technology-Golang-blue.svg)
 
 
-
 Microblogging platform that try to simulate the behaviour of Twitter.
 
 Features
@@ -69,6 +68,80 @@ Amazon RDS was chosen to host PostgreSQL because it simplifies database manageme
 - Fast Searches: Supports indexing which speeds up searches.
 - Data Integrity: Ensures consistency and prevents data corruption.
 - Flexibility: Supports structured (SQL) and semi-structured (JSON) data.
+
+## Example
+
+This section demonstrates a typical application flow. You can either run the application locally or make API calls to the services deployed on AWS (34.235.136.155).
+
+### User creation
+
+The following users were created:
+- rnoblega
+- mperez
+- lrodriguez
+- cmartinez
+
+The image below serves as evidence, but additional API calls were made.
+
+![](static/RnoblegaCreation.jpg)
+
+### Follow users
+
+rnoblega follows:
+- mperez
+- lrodriguez
+- cmartinez
+
+The image below serves as evidence, but additional API calls were made.
+
+
+
+![](static/RnoblegaMPerez.jpg)
+
+### Posting tweets
+
+The following tweets were posted in chronological order:
+
+- "First tweet of mperez" --> mperez
+- "Second tweet of mperez" --> mperez
+- "First tweet of lrodriguez" --> lrodriguez
+- "First tweet of cmartinez" --> cmartinez
+- "Third tweet of mperez" --> mperez
+- "Second tweet of cmartinez" --> cmartinez
+- "Second tweet of lrodriguez" --> lrodriguez
+- "Third tweet of lrodriguez" --> lrodriguez
+- "Third tweet of cmartinez" --> cmartinez
+
+The image below serves as evidence, but additional API calls were made.
+
+
+![](static/FirstTweetMPerez.jpg)
+
+
+### Timeline of rnoblega
+
+The timeline should display tweets from mperez, lrodriguez, and cmartinez, sorted from newest to oldest without a cursor or limit:
+
+- "Third tweet of cmartinez"
+- "Third tweet of lrodriguez"
+- "Second tweet of lrodriguez"
+- "Second tweet of cmartinez"
+- "Third tweet of mperez"
+- "First tweet of cmartinez"
+- "First tweet of lrodriguez"
+- "Second tweet of mperez"
+- "First tweet of mperez"
+
+![](static/TimelineNoCursor.jpg)
+
+
+The timeline should display tweets from mperez, lrodriguez, and cmartinez, sorted from newest to oldest without a cursor at the fifth tweet and a limit of 3:
+
+- "First tweet of cmartinez"
+- "First tweet of lrodriguez"
+- "Second tweet of mperez"
+
+![](static/TimelineCursor.jpg)
 
 ## Testing strategy
 
