@@ -68,6 +68,9 @@ Amazon RDS was chosen as the PostgreSQL host because it simplifies database mana
 - Fast Queries: Supports indexing, which significantly improves search performance.
 - Data Integrity: Ensures consistency and prevents data corruption.
 - Flexibility: Supports structured (SQL) and semi-structured (JSON) data.
+  
+Additional Notes
+The PostgreSQL password is currently stored in the configuration files, but the recommended approach is to use AWS Secrets Manager or similar services to securely manage sensitive credentials.
 
 ## Example
 
