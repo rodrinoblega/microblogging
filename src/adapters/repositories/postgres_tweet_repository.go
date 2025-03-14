@@ -33,8 +33,6 @@ func (r *PostgresTweetRepository) GetTweetsByUsers(userIDs []uuid.UUID, cursor *
 	if tweets, err := r.getTweetsFromCache(ctx, cacheKey); err == nil {
 		log.Println("Tweets retrieved from cache")
 		return tweets, nil
-	} else {
-		log.Printf("Error retrieving data from cache: %v", err)
 	}
 
 	tweets, err := r.getTweetsFromDB(userIDs, cursor, limit)
