@@ -74,7 +74,7 @@ The PostgreSQL password is currently stored in the configuration files, but the 
 
 ## Example
 
-This section demonstrates a typical application flow. You can either run the application locally or make API calls to the services deployed on AWS (34.235.136.155).
+This section demonstrates a typical application flow. You can either run the application locally or make API calls to the services deployed on AWS (34.237.170.173:8080).
 
 ### User creation
 
